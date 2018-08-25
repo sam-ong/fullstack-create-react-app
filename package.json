@@ -8,9 +8,10 @@
   },
   "dependencies": {
     "express": "^4.16.2",
-    "nodemon": "^1.18.3"
+    "react-google-maps": "^9.4.5"
   },
   "devDependencies": {
-    "concurrently": "^3.5.0"
+    "concurrently": "^3.5.0",
+    "nodemon": "^1.18.3"
   }
 }
