@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
-import {MapComponent} from './MapComponent'
+import {MapComponent} from './MapComponent';
+import parking_data from './data/parking_data.json';
+import {Polygon} from "react-google-maps"
 
 class App extends Component {
   state = {
@@ -13,7 +14,7 @@ class App extends Component {
     .then(res => this.setState({ response: res.express} ))
     .catch(err => console.log(err));
   }
-  
+
   callApi = async () => {
     const response = await fetch('/api/hello');
     const body  = await response.json();
@@ -24,17 +25,29 @@ class App extends Component {
   };
 
   render() {
+
     return (
       <div className="App">
-
-
       <MapComponent
       isMarkerShown
       googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI"
       loadingElement={<div style={{ height: `100%` }} />}
       containerElement={<div style={{ height: `400px` }} />}
       mapElement={<div style={{ height: `100%` }} />}
-      />
+      >
+
+
+
+      </MapComponent>
+
+      <ul>
+       {
+         parking_data.map(function(park){
+           return <li>{park.geometry.x} - {park.geometry.y}</li>;
+         })
+       }
+       </ul>
+
       </div>
     );
   }
