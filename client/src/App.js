@@ -33,7 +33,7 @@ class App extends Component {
       isMarkerShown
       googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI"
       loadingElement={<div style={{ height: `100%` }} />}
-      containerElement={<div style={{ height: `400px` }} />}
+      containerElement={<div style={{ height: `100vh` }} />}
       mapElement={<div style={{ height: `100%` }} />}
       >
 
@@ -41,13 +41,6 @@ class App extends Component {
 
       </MapComponent>
 
-      <ul>
-       {
-         parking_data.map(function(park){
-           return <li>{park.geometry.x} - {park.geometry.y}</li>;
-         })
-       }
-       </ul>
 
       </div>
     );
