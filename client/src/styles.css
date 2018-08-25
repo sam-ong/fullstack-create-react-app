@@ -1,0 +1,20 @@
+.input {
+    background-color: red;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    width: 240px;
+    height: 32px;
+    padding: 0 12px;
+    margin-right :10px;
+    border-radius: 3px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    outline: none;
+    text-overflow: ellipses;
+    background-color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,1);
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}

@@ -4,6 +4,7 @@ import './App.css';
 import {MapComponent} from './MapComponent';
 import parking_data from './data/parking_data.json';
 import {Polygon} from "react-google-maps"
+import styles from './styles.css';
 
 class App extends Component {
   state = {
