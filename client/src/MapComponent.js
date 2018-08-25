@@ -15,9 +15,6 @@ import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/Sta
 
 export const MapComponent = withScriptjs(
   withGoogleMap(props => (
-
-    
-
     <GoogleMap
       options={{
         disableDefaultUI: true,
@@ -29,6 +26,7 @@ export const MapComponent = withScriptjs(
       defaultZoom={11}
       defaultCenter={{ lat: -41.2865, lng: 174.7762 }}
     >
+
       {props.isMarkerShown &&
         <Marker position={{ lat: -41.2865, lng: 174.7762 }} />}
 
@@ -93,7 +91,30 @@ export const MapComponent = withScriptjs(
         )
       })}
 
-      <HeatmapLayer data={getHeatMapData()} />
+      <HeatmapLayer
+      data= {getHeatMapData()}
+      options ={{
+        radius: 10,
+        gradient: [
+          'rgba(255, 245, 10, 0)',
+
+
+
+          'rgba(255, 245, 10, 1)',
+          'rgba(255, 220, 13, 1)',
+          'rgba(255, 196, 16, 1)',
+
+
+          'rgba(255, 171, 19, 1)',
+          'rgba(255, 147, 22, 1)',
+          'rgba(255, 122, 25, 1)',
+          'rgba(255, 98, 28, 1)',
+          'rgba(255, 73, 31, 1)',
+          'rgba(255, 49, 34, 1)',
+          'rgba(255, 24, 37, 1)'
+        ]
+      }}
+      />
 
     </GoogleMap>
   ))
