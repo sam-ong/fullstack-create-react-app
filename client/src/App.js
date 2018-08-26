@@ -11,6 +11,7 @@ class App extends Component {
     response: ''
   };
 
+
   componentDidMount() {
     this.callApi()
     .then(res => this.setState({ response: res.express} ))
@@ -18,7 +19,8 @@ class App extends Component {
   }
 
   callApi = async () => {
-    const response = await fetch('/api/hello');
+    const response = await fetch('/carpark/coordinates');
+
     const body  = await response.json();
 
     if (response.status !== 200 ) throw Error(body.message);
@@ -30,19 +32,22 @@ class App extends Component {
 
     return (
       <div className="App">
-      <MapComponent
+
+      <MapComponent>
       isMarkerShown
       googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI"
       loadingElement={<div style={{ height: `100%` }} />}
       containerElement={<div style={{ height: `100vh` }} />}
       mapElement={<div style={{ height: `100%` }} />}
-      >
-
-
-
       </MapComponent>
 
-
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
+        <p className="App-intro">
+          {JSON.stringify(this.state.response)}
+        </p>
       </div>
     );
   }
