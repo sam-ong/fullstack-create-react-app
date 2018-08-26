@@ -8,7 +8,7 @@ import {
 import React from 'react'
 import { Polygon } from 'react-google-maps'
 import HeatmapLayer
-  from 'react-google-maps/lib/components/visualization/HeatmapLayer'
+from 'react-google-maps/lib/components/visualization/HeatmapLayer'
 import parking_data from './data/parking_data.json'
 import {
   StandaloneSearchBox
@@ -21,50 +21,65 @@ import logo from './images/logo.png';
 export const MapComponent = withScriptjs(
   withGoogleMap(props => (
     <GoogleMap
-      options={{
-        disableDefaultUI: true,
-        zoomControl: true,
-        zoomControlOptions: {
-          style: google.maps.ZoomControlStyle.LARGE
-        }
-      }}
-      defaultZoom={11}
-      defaultCenter={{ lat: -41.2865, lng: 174.7762 }}
+    options={{
+      disableDefaultUI: true,
+      zoomControl: true,
+      zoomControlOptions: {
+        style: google.maps.ZoomControlStyle.LARGE
+      }
+    }}
+    defaultZoom={11}
+    defaultCenter={{ lat: -41.2865, lng: 174.7762 }}
+    ref = {(mapInstance) => {this.mapInstance = mapInstance}}
     >
 
-      {props.isMarkerShown &&
-        <Marker position={{ lat: -41.2865, lng: 174.7762 }} />}
+    {props.isMarkerShown &&
+      <Marker position={{ lat: -41.2865, lng: 174.7762 }} />}
 
       <div
-        style={{
-          position: 'fixed',
-          top: '0',
-          width: '100vw',
-          height: '10vh',
-          backgroundColor: 'rgba(255,139,40,1)',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          alignItems: 'center',
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-        }}
+      style={{
+        position: 'fixed',
+        top: '0',
+        width: '100vw',
+        height: '10vh',
+        backgroundColor: 'rgba(255,139,40,1)',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+      }}
       >
 
       <img id="logo" src={logo} />
 
-        <StandaloneSearchBox
-          ref={props.onSearchBoxMounted}
-          bounds={props.bounds}
-          controlPosition={google.maps.ControlPosition.TOP_LEFT}
-          onPlacesChanged={props.onPlacesChanged}
-        >
-          <input
-          className='input'
-            type='text'
-            placeholder='Search for your destination'
-            
-          />
-        </StandaloneSearchBox>
+      <StandaloneSearchBox
+      ref = {(searchBox) => {this.searchBox = searchBox}}
+      bounds={props.bounds}
+      controlPosition={google.maps.ControlPosition.TOP_LEFT}
+      onPlacesChanged={() =>{
+        const bounds = new google.maps.LatLngBounds();
+        const places = this.searchBox.getPlaces();
+
+        places.forEach(place => {
+
+          if (place.geometry.viewport) {
+            bounds.union(place.geometry.viewport)
+            console.log(place)
+          } else {
+            bounds.extend(place.geometry.location)
+          }
+        });
+        this.mapInstance.fitBounds(bounds)
+      }}
+      >
+      <input
+      className='input'
+      type='text'
+      placeholder='Search for your destination'
+
+      />
+      </StandaloneSearchBox>
       </div>
 
       {parking_data.map(function (park) {
@@ -78,48 +93,52 @@ export const MapComponent = withScriptjs(
         ]
         return (
           <Polygon
-            path={coords}
-            key={1}
-            options={{
-              fillColor: '#FF5722',
-              fillOpacity: 0.4,
-              strokeWeight: 0
-            }}
-            onClick={() => console.log('yes')}
+          path={coords}
+          key={1}
+          options={{
+            fillColor: '#FF5722',
+            fillOpacity: 0.4,
+            strokeWeight: 0
+          }}
+          onClick={() => console.log('yes')}
           />
         )
       })}
 
       <HeatmapLayer
-        data={getHeatMapData()}
-        options={{
-          radius: 10,
-          gradient: [
-            'rgba(255, 245, 10, 0)',
+      data={getHeatMapData()}
+      options={{
+        radius: 10,
+        gradient: [
+          'rgba(255, 245, 10, 0)',
 
-            'rgba(255, 245, 10, 1)',
-            'rgba(255, 220, 13, 1)',
-            'rgba(255, 196, 16, 1)',
+          'rgba(255, 245, 10, 1)',
+          'rgba(255, 220, 13, 1)',
+          'rgba(255, 196, 16, 1)',
 
-            'rgba(255, 171, 19, 1)',
-            'rgba(255, 147, 22, 1)',
-            'rgba(255, 122, 25, 1)',
-            'rgba(255, 98, 28, 1)',
-            'rgba(255, 73, 31, 1)',
-            'rgba(255, 49, 34, 1)',
-            'rgba(255, 24, 37, 1)'
-          ]
-        }}
+          'rgba(255, 171, 19, 1)',
+          'rgba(255, 147, 22, 1)',
+          'rgba(255, 122, 25, 1)',
+          'rgba(255, 98, 28, 1)',
+          'rgba(255, 73, 31, 1)',
+          'rgba(255, 49, 34, 1)',
+          'rgba(255, 24, 37, 1)'
+        ]
+      }}
       />
 
-    </GoogleMap>
-  ))
-)
+      </GoogleMap>
+    ))
+  )
 
-function getHeatMapData () {
-  let data = []
-  parking_data.map(function (park) {
-    data.push(new google.maps.LatLng(park.geometry.y, park.geometry.x))
-  })
-  return data
-}
+  function onPlacesChanged(data){
+    console.log("places changed " + data)
+  }
+
+  function getHeatMapData () {
+    let data = []
+    parking_data.map(function (park) {
+      data.push(new google.maps.LatLng(park.geometry.y, park.geometry.x))
+    })
+    return data
+  }
