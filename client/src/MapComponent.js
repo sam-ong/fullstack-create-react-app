@@ -72,15 +72,23 @@ export const MapComponent = withScriptjs(
             <input type='time' className='input' value='19:15:00' />
           </div>
           <div id='drop-button-container'>
-          <img id='arrow' src={arrow} onClick={function () {
+          <img className='arrow' src={arrow} onClick={function () {
                 var slider = document.getElementsByClassName(
                   'sliding-menu-container'
+                )[0]
+                var arrow = document.getElementsByClassName(
+                  'arrow'
                 )[0]
                 console.log(slider)
                 if (slider.classList.contains('active')) {
                   slider.classList.remove('active')
                 } else {
                   slider.classList.add('active')
+                }
+                if (arrow.classList.contains('active')) {
+                  arrow.classList.remove('active')
+                } else {
+                  arrow.classList.add('active')
                 }
               }}/>
           </div>
