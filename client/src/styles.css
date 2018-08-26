@@ -2,7 +2,6 @@
     background-color: red;
     box-sizing: border-box;
     border: 1px solid transparent;
-    
     height: 5vh;
     padding: 0 12px;
     margin-right: 2vh;
@@ -15,8 +14,10 @@
     color: rgba(255, 255, 255, 1);
 }
 
-#location-search{
-  width: 60vw;
+#location-search {
+    margin-top: 10px;
+    width: 93%;
+    margin-left: 10px;
 }
 
 ::placeholder {
@@ -27,4 +28,90 @@
     height: 3vh;
     margin-left: auto;
     margin-right: auto;
+}
+
+.date-time-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
+    margin-left: 10px;
+}
+
+#drop-button-container {
+    width: 100%;
+}
+
+#arrow {
+    cursor: pointer;
+    width: 20px;
+}
+
+.main-container {
+    position: relative;
+}
+
+@media only screen and (min-width: 415px) {
+    .main-container .sliding-menu-container {
+        height: 120px;
+        width: auto;
+        background: rgba(255, 139, 40, 1);
+        position: absolute;
+        left: 0px;
+        top: -572px;
+        opacity: 1;
+        transition: .2s all linear;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        margin-left: 3vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+}
+
+@media only screen and (min-width: 415px) {
+.main-container .sliding-menu-container.active {
+    visibility: visible;
+    pointer-events: inherit;
+    transition: .2s all ease-in-out;
+    opacity: 1;
+    left: 0;
+    top: -479px;
+}
+}
+
+@media only screen and (max-width: 414px) {
+.main-container .sliding-menu-container.active {
+    visibility: visible;
+    pointer-events: inherit;
+    transition: .2s all ease-in-out;
+    opacity: 1;
+    left: 35px;
+    top: -676px;
+}
+}
+
+@media only screen and (max-width: 414px) {
+    .sliding-menu-container {
+        height: 120px;
+        width: auto;
+        background: rgba(255, 139, 40, 1);
+        position: absolute;
+        left: 35px;
+        top: -772px;
+        opacity: 1;
+        transition: .2s all linear;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        margin-left: 3vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
 }
