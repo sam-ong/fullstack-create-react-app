@@ -14,6 +14,8 @@ import {
   StandaloneSearchBox
 } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
 
+import logo from './images/logo.png';
+
 <script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
 
 export const MapComponent = withScriptjs(
@@ -41,12 +43,15 @@ export const MapComponent = withScriptjs(
           height: '10vh',
           backgroundColor: 'rgba(255,139,40,1)',
           display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'flex-end',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
           boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
         }}
       >
+
+      <img id="logo" src={logo} />
+
         <StandaloneSearchBox
           ref={props.onSearchBoxMounted}
           bounds={props.bounds}
