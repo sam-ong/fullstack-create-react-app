@@ -6,7 +6,7 @@ const https = require('https');
 app.get('/carpark/coordinates', (req, res) => {
   let data = '';
   var carParkArray = {
-    coordinate:[]
+    geometry:[]
   };
 
   https.get('https://services1.arcgis.com/CPYspmTk3abe6d7i/arcgis/rest/services/Car_Parks_Wellington/FeatureServer/0/query?where=1%3D1&outFields=*&orderByFields=system_id DESC&outSR=4326&f=json', (resp) => {
@@ -17,15 +17,14 @@ app.get('/carpark/coordinates', (req, res) => {
   resp.on('end', () =>{
     if(data){
       var body = JSON.parse(data);
-      console.log(body);
       for(var i=0; i<1000;i++){
-        carParkArray.coordinate.push({
+        carParkArray.geometry.push({
             "x" : body.features[i].geometry.x,
             "y"  : body.features[i].geometry.y
         });
       }
 
-    res.send({ express: carParkArray });
+    res.send({ express: carParkArray.geometry });
   }
 
   });

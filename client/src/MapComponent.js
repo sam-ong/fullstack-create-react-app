@@ -15,6 +15,8 @@ import {
 } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
 
 import logo from './images/logo.png';
+import HeatMap from './heatMapComponent';
+
 
 <script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
 
@@ -62,19 +64,22 @@ export const MapComponent = withScriptjs(
           className='input'
             type='text'
             placeholder='Search for your destination'
-            
+
           />
         </StandaloneSearchBox>
       </div>
 
-      {parking_data.map(function (park) {
+
+      {
+        props.data && props.data.express.map(function (park) {
+
         const size = 0.00001
-        console.log(park.geometry)
+
         const coords = [
-          { lat: park.geometry.y + size, lng: park.geometry.x + size },
-          { lat: park.geometry.y + size, lng: park.geometry.x - size },
-          { lat: park.geometry.y - size, lng: park.geometry.x - size },
-          { lat: park.geometry.y - size, lng: park.geometry.x + size }
+          { lat: park.y + size, lng: park.x + size },
+          { lat: park.y + size, lng: park.x - size },
+          { lat: park.y - size, lng: park.x - size },
+          { lat: park.y - size, lng: park.x + size }
         ]
         return (
           <Polygon
@@ -90,36 +95,9 @@ export const MapComponent = withScriptjs(
         )
       })}
 
-      <HeatmapLayer
-        data={getHeatMapData()}
-        options={{
-          radius: 10,
-          gradient: [
-            'rgba(255, 245, 10, 0)',
+      <HeatMap />
 
-            'rgba(255, 245, 10, 1)',
-            'rgba(255, 220, 13, 1)',
-            'rgba(255, 196, 16, 1)',
-
-            'rgba(255, 171, 19, 1)',
-            'rgba(255, 147, 22, 1)',
-            'rgba(255, 122, 25, 1)',
-            'rgba(255, 98, 28, 1)',
-            'rgba(255, 73, 31, 1)',
-            'rgba(255, 49, 34, 1)',
-            'rgba(255, 24, 37, 1)'
-          ]
-        }}
-      />
 
     </GoogleMap>
   ))
 )
-
-function getHeatMapData () {
-  let data = []
-  parking_data.map(function (park) {
-    data.push(new google.maps.LatLng(park.geometry.y, park.geometry.x))
-  })
-  return data
-}

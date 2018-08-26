@@ -1,4 +1,4 @@
-
+/* global google */
 import React, { Component } from 'react';
 import './App.css';
 import {MapComponent} from './MapComponent';
@@ -8,45 +8,50 @@ import styles from './styles.css';
 import logo from './logo.svg';
 import './App.css';
 
+<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
+
 class App extends Component {
   state = {
-    response: ''
+    data: null,
   };
 
-
-  componentDidMount() {
-    this.callApi()
-    .then(res => this.setState({ response: res.express} ))
+  componentDidMount(){
+    callApi()
+    .then(res => this.setState({data: res}))
     .catch(err => console.log(err));
   }
-
-  callApi = async () => {
-    const response = await fetch('/carpark/coordinates');
-
-    const body  = await response.json();
-
-    if (response.status !== 200 ) throw Error(body.message);
-
-    return body;
-  };
 
   render() {
 
     return (
       <div className="App">
 
-      <MapComponent
-      isMarkerShown
-      googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI"
-      loadingElement={<div style={{ height: `100%` }} />}
-      containerElement={<div style={{ height: `100vh` }} />}
-      mapElement={<div style={{ height: `100%` }} />}
-      >
-      </MapComponent>
+      {
+        this.state.data &&
+        <MapComponent
+          data={this.state.data}
+          isMarkerShown
+          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI"
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `100vh` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+        >
+        </MapComponent>
+      }
 
-      </div> 
+      </div>
     );
   }
 }
+
+async function callApi() {
+  const response = await fetch('/carpark/coordinates');
+
+  const body  = await response.json();
+
+  if (response.status !== 200 ) throw Error(body.message);
+  return body;
+}
+
 
 export default App;
