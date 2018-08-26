@@ -52,7 +52,8 @@ export const MapComponent = withScriptjs(
       >
 
       <img id="logo" src={logo} />
-
+      <input type="date" className= 'input' value= '2018-08-26'></input>
+      <input type="time" className= 'input' value= '19:15:00'></input>
       <StandaloneSearchBox
       ref = {(searchBox) => {this.searchBox = searchBox}}
       bounds={props.bounds}
@@ -65,7 +66,6 @@ export const MapComponent = withScriptjs(
 
           if (place.geometry.viewport) {
             bounds.union(place.geometry.viewport)
-            console.log(place)
           } else {
             bounds.extend(place.geometry.location)
           }
@@ -75,6 +75,7 @@ export const MapComponent = withScriptjs(
       >
       <input
       className='input'
+      id = 'location-search'
       type='text'
       placeholder='Search for your destination'
 
@@ -108,21 +109,16 @@ export const MapComponent = withScriptjs(
       <HeatmapLayer
       data={getHeatMapData()}
       options={{
-        radius: 10,
+        radius: 20,
         gradient: [
-          'rgba(255, 245, 10, 0)',
-
-          'rgba(255, 245, 10, 1)',
-          'rgba(255, 220, 13, 1)',
+          'rgba(255, 220, 13, 0)',
           'rgba(255, 196, 16, 1)',
 
           'rgba(255, 171, 19, 1)',
           'rgba(255, 147, 22, 1)',
           'rgba(255, 122, 25, 1)',
-          'rgba(255, 98, 28, 1)',
-          'rgba(255, 73, 31, 1)',
-          'rgba(255, 49, 34, 1)',
-          'rgba(255, 24, 37, 1)'
+          'rgba(255, 98, 28, 1)'
+
         ]
       }}
       />
