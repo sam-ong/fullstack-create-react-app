@@ -3,9 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  state = { 
-    response: ''
+  state = {
+    response: '',
+    currentObjects: ''
   };
+
 
   componentDidMount() {
     this.callApi()
@@ -14,7 +16,8 @@ class App extends Component {
   }
 
   callApi = async () => {
-    const response = await fetch('/api/hello');
+    const response = await fetch('/carpark/coordinates');
+
     const body  = await response.json();
 
     if (response.status !== 200 ) throw Error(body.message);
@@ -30,7 +33,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
-          {this.state.response}
+          {JSON.stringify(this.state.response)}
         </p>
       </div>
     );
