@@ -16,7 +16,6 @@ import {
 import logo from './images/logo.png'
 import HeatMap from './heatMapComponent'
 import arrow from './images/arrow-icon.png'
-
 ;<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
 
 export const MapComponent = withScriptjs(
@@ -41,60 +40,72 @@ export const MapComponent = withScriptjs(
           <Marker position={{ lat: -41.2865, lng: 174.7762 }} />}
 
         <div className='sliding-menu-container'>
-          <StandaloneSearchBox
-            ref={searchBox => {
-              this.searchBox = searchBox
-            }}
-            bounds={props.bounds}
-            controlPosition={google.maps.ControlPosition.TOP_LEFT}
-            onPlacesChanged={() => {
-              const bounds = new google.maps.LatLngBounds()
-              const places = this.searchBox.getPlaces()
+          <div id='location-search-container'>
+            <StandaloneSearchBox
+              ref={searchBox => {
+                this.searchBox = searchBox
+              }}
+              bounds={props.bounds}
+              controlPosition={google.maps.ControlPosition.TOP_LEFT}
+              onPlacesChanged={() => {
+                const bounds = new google.maps.LatLngBounds()
+                const places = this.searchBox.getPlaces()
 
-              places.forEach(place => {
-                if (place.geometry.viewport) {
-                  bounds.union(place.geometry.viewport)
-                } else {
-                  bounds.extend(place.geometry.location)
-                }
-              })
-              this.mapInstance.fitBounds(bounds)
-            }}
-          >
-            <input
-              className='input'
-              id='location-search'
-              type='text'
-              placeholder='Search for your destination'
-            />
-          </StandaloneSearchBox>
+                places.forEach(place => {
+                  if (place.geometry.viewport) {
+                    bounds.union(place.geometry.viewport)
+                  } else {
+                    bounds.extend(place.geometry.location)
+                  }
+                })
+                this.mapInstance.fitBounds(bounds)
+              }}
+            >
+              <input
+                className='input'
+                id='location-search'
+                type='text'
+                placeholder='Search for your destination'
+              />
+            </StandaloneSearchBox>
+          </div>
           <div className='date-time-container'>
-            <input type='date' className='input' value='2018-08-26' />
-            <input type='time' className='input' value='19:15:00' />
+            <input
+              type='date'
+              className='input'
+              id='date-picker'
+              value='2018-08-26'
+            />
+            <input
+              type='time'
+              className='input'
+              id='time-picker'
+              value='19:15:00'
+            />
           </div>
           <div id='drop-button-container'>
-          <img
-            className='arrow'
-            src={arrow}
-            onClick={function () {
-              var slider = document.getElementsByClassName(
-                'sliding-menu-container'
-              )[0]
-              var arrow = document.getElementsByClassName('arrow')[0]
-              console.log(slider)
-              if (slider.classList.contains('active')) {
-                slider.classList.remove('active')
-              } else {
-                slider.classList.add('active')
-              }
-              if (arrow.classList.contains('active')) {
-                arrow.classList.remove('active')
-              } else {
-                arrow.classList.add('active')
-              }
-            }}
-          />
-        </div>
+            <img
+              className='arrow'
+              src={arrow}
+              onClick={function () {
+                var slider = document.getElementsByClassName(
+                  'sliding-menu-container'
+                )[0]
+                var arrow = document.getElementsByClassName('arrow')[0]
+                console.log(slider)
+                if (slider.classList.contains('active')) {
+                  slider.classList.remove('active')
+                } else {
+                  slider.classList.add('active')
+                }
+                if (arrow.classList.contains('active')) {
+                  arrow.classList.remove('active')
+                } else {
+                  arrow.classList.add('active')
+                }
+              }}
+            />
+          </div>
         </div>
 
         <div
