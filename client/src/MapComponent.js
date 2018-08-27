@@ -13,12 +13,11 @@ import parking_data from './data/parking_data.json'
 import {
   StandaloneSearchBox
 } from 'react-google-maps/lib/components/places/StandaloneSearchBox'
-import logo from './images/logo.png';
-import HeatMap from './heatMapComponent';
-import arrow from './images/arrow-icon.png';
+import logo from './images/logo.png'
+import HeatMap from './heatMapComponent'
+import arrow from './images/arrow-icon.png'
 
-<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
-
+;<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
 
 export const MapComponent = withScriptjs(
   withGoogleMap(props => (
@@ -61,38 +60,49 @@ export const MapComponent = withScriptjs(
               })
               this.mapInstance.fitBounds(bounds)
             }}
-              >
-              <input
-                className='input'
-                id='location-search'
-                type='text'
-                placeholder='Search for your destination'
-              />
-            </StandaloneSearchBox>
-            <div className='date-time-container'>
-              <input type='date' className='input' value='2018-08-26' />
-              <input type='time' className='input' value='19:15:00' />
-            </div>
-            <div id='drop-button-container'>
-            <img id='arrow' src={arrow} onClick={function () {
-                  var slider = document.getElementsByClassName(
-                    'sliding-menu-container'
-                  )[0]
-                  console.log(slider)
-                  if (slider.classList.contains('active')) {
-                    slider.classList.remove('active')
-                  } else {
-                    slider.classList.add('active')
-                  }
-                }}/>
-            </div>
+          >
+            <input
+              className='input'
+              id='location-search'
+              type='text'
+              placeholder='Search for your destination'
+            />
+          </StandaloneSearchBox>
+          <div className='date-time-container'>
+            <input type='date' className='input' value='2018-08-26' />
+            <input type='time' className='input' value='19:15:00' />
           </div>
-          <div
+          <div id='drop-button-container'>
+          <img
+            className='arrow'
+            src={arrow}
+            onClick={function () {
+              var slider = document.getElementsByClassName(
+                'sliding-menu-container'
+              )[0]
+              var arrow = document.getElementsByClassName('arrow')[0]
+              console.log(slider)
+              if (slider.classList.contains('active')) {
+                slider.classList.remove('active')
+              } else {
+                slider.classList.add('active')
+              }
+              if (arrow.classList.contains('active')) {
+                arrow.classList.remove('active')
+              } else {
+                arrow.classList.add('active')
+              }
+            }}
+          />
+        </div>
+        </div>
+
+        <div
           style={{
             position: 'fixed',
             top: '0',
             width: '100vw',
-            height: '60px',
+            height: '6vh',
             backgroundColor: 'rgba(255,139,40,1)',
             display: 'flex',
             flexDirection: 'row',
@@ -106,32 +116,31 @@ export const MapComponent = withScriptjs(
 
         </div>
 
-      {
-        props.data && props.data.express.map(function (park) {
+        {props.data &&
+          props.data.express.map(function (park) {
+            const size = 0.00001
 
-        const size = 0.00001
+            const coords = [
+              { lat: park.y + size, lng: park.x + size },
+              { lat: park.y + size, lng: park.x - size },
+              { lat: park.y - size, lng: park.x - size },
+              { lat: park.y - size, lng: park.x + size }
+            ]
+            return (
+              <Polygon
+                path={coords}
+                key={1}
+                options={{
+                  fillColor: '#FF5722',
+                  fillOpacity: 0.4,
+                  strokeWeight: 0
+                }}
+                onClick={() => console.log('yes')}
+              />
+            )
+          })}
 
-        const coords = [
-          { lat: park.y + size, lng: park.x + size },
-          { lat: park.y + size, lng: park.x - size },
-          { lat: park.y - size, lng: park.x - size },
-          { lat: park.y - size, lng: park.x + size }
-        ]
-        return (
-          <Polygon
-            path={coords}
-            key={1}
-            options={{
-              fillColor: '#FF5722',
-              fillOpacity: 0.4,
-              strokeWeight: 0
-            }}
-            onClick={() => console.log('yes')}
-          />
-        )
-      })}
-  
-      <HeatMap />
+        <HeatMap />
 
       </GoogleMap>
     </div>
@@ -141,4 +150,3 @@ export const MapComponent = withScriptjs(
 function onPlacesChanged (data) {
   console.log('places changed ' + data)
 }
-
