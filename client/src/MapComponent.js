@@ -13,9 +13,10 @@ import parking_data from './data/parking_data.json'
 import {
   StandaloneSearchBox
 } from 'react-google-maps/lib/components/places/StandaloneSearchBox'
-
 import logo from './images/logo.png'
+import HeatMap from './heatMapComponent'
 import arrow from './images/arrow-icon.png'
+
 ;<script src='https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places,visualization&key=AIzaSyCm_yPi4u2iAfSTSR-lAsrdWZHN-NbuIMI' />
 
 export const MapComponent = withScriptjs(
@@ -72,26 +73,28 @@ export const MapComponent = withScriptjs(
             <input type='time' className='input' value='19:15:00' />
           </div>
           <div id='drop-button-container'>
-          <img className='arrow' src={arrow} onClick={function () {
-                var slider = document.getElementsByClassName(
-                  'sliding-menu-container'
-                )[0]
-                var arrow = document.getElementsByClassName(
-                  'arrow'
-                )[0]
-                console.log(slider)
-                if (slider.classList.contains('active')) {
-                  slider.classList.remove('active')
-                } else {
-                  slider.classList.add('active')
-                }
-                if (arrow.classList.contains('active')) {
-                  arrow.classList.remove('active')
-                } else {
-                  arrow.classList.add('active')
-                }
-              }}/>
-          </div>
+          <img
+            className='arrow'
+            src={arrow}
+            onClick={function () {
+              var slider = document.getElementsByClassName(
+                'sliding-menu-container'
+              )[0]
+              var arrow = document.getElementsByClassName('arrow')[0]
+              console.log(slider)
+              if (slider.classList.contains('active')) {
+                slider.classList.remove('active')
+              } else {
+                slider.classList.add('active')
+              }
+              if (arrow.classList.contains('active')) {
+                arrow.classList.remove('active')
+              } else {
+                arrow.classList.add('active')
+              }
+            }}
+          />
+        </div>
         </div>
 
         <div
@@ -99,7 +102,7 @@ export const MapComponent = withScriptjs(
             position: 'fixed',
             top: '0',
             width: '100vw',
-            height: '60px',
+            height: '6vh',
             backgroundColor: 'rgba(255,139,40,1)',
             display: 'flex',
             flexDirection: 'row',
@@ -113,44 +116,31 @@ export const MapComponent = withScriptjs(
 
         </div>
 
-        {parking_data.map(function (park) {
-          const size = 0.00001
-          console.log(park.geometry)
-          const coords = [
-            { lat: park.geometry.y + size, lng: park.geometry.x + size },
-            { lat: park.geometry.y + size, lng: park.geometry.x - size },
-            { lat: park.geometry.y - size, lng: park.geometry.x - size },
-            { lat: park.geometry.y - size, lng: park.geometry.x + size }
-          ]
-          return (
-            <Polygon
-              path={coords}
-              key={1}
-              options={{
-                fillColor: '#FF5722',
-                fillOpacity: 0.4,
-                strokeWeight: 0
-              }}
-              onClick={() => console.log('yes')}
-            />
-          )
-        })}
+        {props.data &&
+          props.data.express.map(function (park) {
+            const size = 0.00001
 
-        <HeatmapLayer
-          data={getHeatMapData()}
-          options={{
-            radius: 20,
-            gradient: [
-              'rgba(255, 220, 13, 0)',
-              'rgba(255, 196, 16, 1)',
-
-              'rgba(255, 171, 19, 1)',
-              'rgba(255, 147, 22, 1)',
-              'rgba(255, 122, 25, 1)',
-              'rgba(255, 98, 28, 1)'
+            const coords = [
+              { lat: park.y + size, lng: park.x + size },
+              { lat: park.y + size, lng: park.x - size },
+              { lat: park.y - size, lng: park.x - size },
+              { lat: park.y - size, lng: park.x + size }
             ]
-          }}
-        />
+            return (
+              <Polygon
+                path={coords}
+                key={1}
+                options={{
+                  fillColor: '#FF5722',
+                  fillOpacity: 0.4,
+                  strokeWeight: 0
+                }}
+                onClick={() => console.log('yes')}
+              />
+            )
+          })}
+
+        <HeatMap />
 
       </GoogleMap>
     </div>
@@ -159,12 +149,4 @@ export const MapComponent = withScriptjs(
 
 function onPlacesChanged (data) {
   console.log('places changed ' + data)
-}
-
-function getHeatMapData () {
-  let data = []
-  parking_data.map(function (park) {
-    data.push(new google.maps.LatLng(park.geometry.y, park.geometry.x))
-  })
-  return data
 }
